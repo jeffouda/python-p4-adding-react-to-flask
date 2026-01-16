@@ -9,6 +9,9 @@ def client():
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///test.db"
     with app.app_context():
         db.create_all()
+        # Clear any existing data
+        Message.query.delete()
+        db.session.commit()
         yield app.test_client()
         db.drop_all()
         # Clean up the test db file
